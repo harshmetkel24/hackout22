@@ -6,7 +6,7 @@ const cors = require ('cors');
 const cookieParser = require('cookie-parser')
 // const routes
 const authRoute = require('./Routes/Auth.js')
-const busRoute = require('./Routes/bus_routes.js')
+// const busRoute = require('./Routes/bus_routes.js')
 
 const app = express();
 dotenv.config();
@@ -27,7 +27,7 @@ app.use(cookieParser())
 app.use("/auth",authRoute);
 
 // Add find functionality
-app.use('/find',busRoute);
+// app.use('/find',busRoute);
 // Error handling middleware
 app.use((err,req,res,next) => {
     const errorStatusCode = err.status || 500;

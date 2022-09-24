@@ -6,18 +6,13 @@ import Tutorial from "../components/Tutorial";
 const Home = () => {
   function getCookie() {
     var allcookies = document.cookie;
-    var arrayb = allcookies.split(";");
-      arrayb.forEach(item => {
-        if (item.startsWith("token")){
-          return item;
-      }
-    })
+    let tokenCookie = allcookies.split(";")[0]
+    return tokenCookie.substring(6)
   }
   const token = getCookie();
-  console.log(token);
   return (
     <div>
-      <Navbar />
+      <Navbar token = {token}/>
       <div className="mt-5 pt-3">
         {token && <Predictor />}
         {/* <Predictor/> */}

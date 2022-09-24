@@ -27,7 +27,7 @@ function Login() {
     fetch("http://localhost:2000/auth/login", requestOptions)
         .then((response) => response.json())
         .then((data) => {
-          document.cookie = `token=${data.token};`
+          document.cookie = `token=${data.token};max-age=86400`
           if(data.success) {
             navigate("/" )
           } else {
