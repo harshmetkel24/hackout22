@@ -3,9 +3,13 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <nav className="navbar navbar-expand-lg bg-warning">
+    <nav className="navbar navbar-expand-lg">
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/">
+        <Link
+          className="navbar-brand"
+          style={{ fontWeight: "bold", fontSize: "1.5em" }}
+          to="/"
+        >
           Predict Bus
         </Link>
         <button
@@ -36,7 +40,9 @@ const Navbar = () => {
             <Link to="/login">
               <button className="btn me-3 btn-light">Login</button>
             </Link>
-            <button className="btn me-5 btn-light">Sign up</button>
+            <Link to="/signup">
+              <button className="btn me-5 btn-light">Sign up</button>
+            </Link>
           </div>
         </div>
       </div>

@@ -8,10 +8,10 @@ const Home = () => {
       <Navbar />
       <div className="container">
         <div
-          className="text-center display-5 font-weight-bold"
+          className="text-center display-5 font-weight-bold mt-4"
           style={{ fontWeight: 500, color: "  #f37335" }}
         >
-          What services we provide?
+          How to predict your bus?
         </div>
         <div className="tutorial-container container-fluid d-flex justify-content-around flex-wrap">
           <Card

@@ -34,11 +34,20 @@ function App() {
         >
           <MDBInput
             wrapperClass="mb-4"
+            label="Username"
+            id="formControlLg"
+            type="text"
+            size="lg"
+            placeholder="Enter Your Username"
+            required
+          />
+          <MDBInput
+            wrapperClass="mb-4"
             label="Contant No"
             id="formControlLg"
             type="tel"
-            placeholder="Enter Your Contact Number"
             size="lg"
+            placeholder="Enter Your Contact Number"
             required
           />
           <MDBInput
@@ -47,6 +56,15 @@ function App() {
             id="formControlLg"
             type="password"
             placeholder="Enter Your Password"
+            size="lg"
+            required
+          />
+          <MDBInput
+            wrapperClass="mb-4"
+            label="Confirm Password"
+            id="formControlLg"
+            type="password"
+            placeholder="Confirm Your Password"
             size="lg"
             required
           />
@@ -64,13 +82,13 @@ function App() {
           <div className="text-center text-md-start mt-4 pt-2">
             <Link to="/">
               <MDBBtn className="mb-0 px-5 btn-warning" size="lg">
-                Login
+                Sign Up
               </MDBBtn>
             </Link>
             <p className="small fw-bold mt-2 pt-1 mb-2">
-              Don't have an account?{" "}
-              <Link to="signup" className="link-danger">
-                SignUp
+              Already have an Account?{" "}
+              <Link to="/login" className="link-danger">
+                Login
               </Link>
             </p>
           </div>
