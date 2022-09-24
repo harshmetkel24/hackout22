@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { LoginContext } from "../Contexts/LoginContext";
 import {
   MDBContainer,
   MDBCol,
@@ -10,6 +11,8 @@ import Navbar from "../components/Navbar";
 import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
+  const { userName, setUserName, token, setToken } = useContext(LoginContext);
+
   const [contact, setContact] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -19,19 +22,19 @@ function Login() {
       mobile: contact,
       password: password,
     };
-
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
     };
-
     fetch("http://localhost:2000/auth/login", requestOptions)
       .then((response) => response.json())
       .then((data) => {
-        document.cookie = `token=${data.token};max-age=86400;SameSite=None;secure;`;
+        document.cookie = `token=${data.token};max-age=3600;SameSite=None;secure;`;
+        setToken(data.token);
         if (data.success) {
-          navigate("/", { state: { name: data.user.name } });
+          setUserName(data.user.name);
+          navigate("/");
         } else {
           setError(data.message);
         }

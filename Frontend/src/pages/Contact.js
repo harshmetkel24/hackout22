@@ -20,6 +20,25 @@ const list = [
 ];
 
 const ContactMe = () => {
+  const getCookie = () => {
+    var allcookies = document.cookie;
+    let arr = allcookies.split(";");
+    for (let i = 0; i < arr.length; ++i) {
+      if (arr[i][0] === " ") {
+        arr[i] = arr[i].substring(1);
+      }
+    }
+    let token = "";
+    for (let i = 0; i < arr.length; ++i) {
+      if (arr[i].slice(0, 6) === "token=") {
+        token = arr[i].substring(6);
+        break;
+      }
+    }
+    return token;
+  };
+  let token = getCookie();
+
   const [mailerState, setMailerState] = useState({
     name: "",
     email: "",
@@ -72,7 +91,7 @@ const ContactMe = () => {
   };
   return (
     <>
-      <Navbar />
+      <Navbar token={token} />
       <Container
         maxWidth={"lg"}
         sx={{

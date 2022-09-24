@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
+import { LoginContext } from "../Contexts/LoginContext";
+
 import { Link } from "react-router-dom";
 
-const Navbar = ({ token }) => {
+const Navbar = () => {
+  const { userName, setUserName, token, setToken } = useContext(LoginContext);
   const handleSubmit = () => {
-    document.cookie = `token=${token}; max-age=-60`;
+    document.cookie = `token=${token}; max-age=-60;SameSite:None;secure;`;
+    setToken(null);
   };
   return (
     <nav
@@ -54,14 +58,22 @@ const Navbar = ({ token }) => {
               </>
             )}
             {token && (
-              <Link to="/login">
-                <button
-                  className="btn me-3 btn-outline-dark"
-                  onClick={handleSubmit}
+              <>
+                <ul
+                  className="navbar-nav me-auto mb-2 mb-lg-0"
+                  style={{ paddingRight: "8px", marginTop: "5px" }}
                 >
-                  Log out
-                </button>
-              </Link>
+                  <li className="nav-item">Welcome {userName}</li>
+                </ul>
+                <Link to="/login">
+                  <button
+                    className="btn me-3 btn-outline-dark"
+                    onClick={handleSubmit}
+                  >
+                    Log out
+                  </button>
+                </Link>
+              </>
             )}
           </div>
         </div>

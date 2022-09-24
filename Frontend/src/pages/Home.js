@@ -1,10 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
+import { LoginContext } from "../Contexts/LoginContext";
+
 import Navbar from "../components/Navbar";
+
 import Predictor from "../components/Predictor";
 import Tutorial from "../components/Tutorial";
 
 const Home = () => {
-  const getCookie = () => {
+  const { userName, setUserName, token, setToken } = useContext(LoginContext);
+
+  function getCookie() {
     var allcookies = document.cookie;
     let arr = allcookies.split(";");
     for (let i = 0; i < arr.length; ++i) {
@@ -12,23 +17,23 @@ const Home = () => {
         arr[i] = arr[i].substring(1);
       }
     }
-    // console.log(arr);
-    let token = "";
+    let _token = "";
     for (let i = 0; i < arr.length; ++i) {
       if (arr[i].slice(0, 6) === "token=") {
-        token = arr[i].substring(6);
+        _token = arr[i].substring(6);
         break;
       }
     }
-    return token;
-  };
-  let token = getCookie();
+    return { _token };
+  }
+  let { _token } = getCookie();
+  setToken(_token);
   useEffect(() => {
     document.title = "Home | Predict Bus";
   }, []);
   return (
     <>
-      <Navbar token={token} />
+      <Navbar />
       <div className="mt-5 pt-3">
         {token && <Predictor />}
         {/* <Predictor/> */}
