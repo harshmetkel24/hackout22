@@ -4,17 +4,24 @@ import Predictor from "../components/Predictor";
 import Tutorial from "../components/Tutorial";
 
 const Home = () => {
+  function getCookie() {
+    var allcookies = document.cookie;
+    let tokenCookie = allcookies.split(";")[0];
+    return tokenCookie.substring(6);
+  }
+  const token = getCookie();
   useEffect(() => {
     document.title = "Home | Predict Bus";
   }, []);
   return (
-    <div>
-      <Navbar />
+    <>
+      <Navbar token={token} />
       <div className="mt-5 pt-3">
-        <Predictor />
+        {token && <Predictor />}
+        {/* <Predictor/> */}
         <Tutorial />
       </div>
-    </div>
+    </>
   );
 };
 

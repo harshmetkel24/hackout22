@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({ token }) => {
+  const handleSubmit = () => {
+    document.cookie = `token=${token}; max-age=-60`;
+  };
   return (
     <nav
       className="navbar navbar-expand-lg position-fixed vw-100"
@@ -40,12 +43,26 @@ const Navbar = () => {
             </li>
           </ul>
           <div className="d-flex">
-            <Link to="/login">
-              <button className="btn me-3 btn-outline-dark">Login</button>
-            </Link>
-            <Link to="/signup">
-              <button className="btn me-5 btn-outline-dark">Sign up</button>
-            </Link>
+            {!token && (
+              <>
+                <Link to="/login">
+                  <button className="btn me-3 btn-outline-dark">Login</button>
+                </Link>
+                <Link to="/signup">
+                  <button className="btn me-5 btn-outline-dark">Sign up</button>
+                </Link>
+              </>
+            )}
+            {token && (
+              <Link to="/login">
+                <button
+                  className="btn me-3 btn-outline-dark"
+                  onClick={handleSubmit}
+                >
+                  Log out
+                </button>
+              </Link>
+            )}
           </div>
         </div>
       </div>

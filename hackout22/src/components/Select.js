@@ -13,7 +13,7 @@ export default function SelectLabels({ label, helperText }) {
   };
 
   return (
-    <div>
+    <>
       <FormControl
         sx={{
           m: 1,
@@ -38,6 +38,6 @@ export default function SelectLabels({ label, helperText }) {
         </Select>
         <FormHelperText>{helperText}</FormHelperText>
       </FormControl>
-    </div>
+    </>
   );
 }

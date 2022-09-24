@@ -7,17 +7,38 @@ import {
   MDBInput,
 } from "mdb-react-ui-kit";
 import Navbar from "../components/Navbar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
   const [contact, setContact] = useState("");
   const [password, setPassword] = useState("");
-
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
   const handleSubmit = () => {
     const user = {
       mobile: contact,
       password: password,
     };
+
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(user),
+    };
+
+    fetch("http://localhost:2000/auth/login", requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        document.cookie = `token=${data.token};max-age=86400`;
+        if (data.success) {
+          navigate("/");
+        } else {
+          setError(data.message);
+        }
+      })
+      .catch((err) => {
+        setError(err);
+      });
   };
 
   return (
@@ -74,6 +95,9 @@ function Login() {
             />
             <a href="!#">Forgot password?</a>
           </div> */}
+          {error && (
+            <p className="small fw-bold mt-2 pt-1 mb-2 text-danger">{error}</p>
+          )}
 
           <div className="text-center text-md-start mt-4 pt-2">
             <Link to="/">

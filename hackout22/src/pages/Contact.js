@@ -13,7 +13,7 @@ import GraphemeSplitter from "grapheme-splitter";
 
 const list = [
   "We predict your Bus🚌",
-  "Like Our Work?",
+  "♥ Our Work?",
   "Or",
   "faced any issue?",
   "Then do Contact Us👋🏽",
