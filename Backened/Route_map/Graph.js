@@ -74,6 +74,7 @@ class Graph {
     constructor() {
         this.adjacencyList = {};
         this.AverageSpeedOfBus=50.0
+        this.Initialize()
     }
     Initialize()
     {
@@ -85,7 +86,7 @@ class Graph {
         {
             for(let j in RouteMap[i])
             {
-                this.addEdge(i+1,j)
+                this.addEdge(i+1,RouteMap[i][j])
             }
         }
     }
@@ -148,22 +149,27 @@ class Graph {
         return path.concat(smallest).reverse();
     }
 
-    Get_Buses_List(start,finish,start_time,m_wait_time)
+    Get_stops_List(start,finish,m_wait_time)
     {
         let shortest_path=this.Dijkstra(start,finish)
         let nextNode=shortest_path[1]
         let visited={}
-        let bus_list=[]
+        let stops_list=[]
         for(let n in this.adjacencyList[start])
         {
             if(this.adjacencyList[start][n].node!=nextNode)
             {
                 let curr_time=this.adjacencyList[start][n].weight/this.AverageSpeedOfBus
-                DFS(this.adjacencyList[start][n],wait_time,curr_time,bus_list)
+                if(curr_time<=wait_time)
+                {
+                    stops_list.push(this.adjacencyList[start][n].node)
+                    DFS(this.adjacencyList[start][n],wait_time,curr_time,stops_list)
+                }
             }
         }
+        return stops_list
     }
-    DFS(curr,wait_time,current_time,bus_list)
+    DFS(curr,wait_time,current_time,stops_list)
     {
         for(let neighbour in this.adjacencyList[curr])
         {
@@ -171,16 +177,15 @@ class Graph {
             let distance=nextnode.weight
             let additional_time=distance/this.AverageSpeedOfBus
             // add the bus into the bus list
-
+            stops_list.push(nextnode.node)
 
             if(current_time+additional_time <= wait_time)
             {
-                this.DFS(nextnode.node,wait_time,current_time+additional_time,bus_list)
+                this.DFS(nextnode.node,wait_time,current_time+additional_time,stops_list)
             }
         }
     }
 }
 
 
-let g=new Graph()
-g.Initialize()
+module.exports=Graph

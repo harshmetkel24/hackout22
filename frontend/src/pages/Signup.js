@@ -1,5 +1,4 @@
-import React , {useState} from "react";
-import axios from 'axios'
+import React, { useState } from "react";
 import {
   MDBContainer,
   MDBCol,
@@ -9,33 +8,44 @@ import {
 } from "mdb-react-ui-kit";
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-function App() {
-
-  const [userName,setUserName] = useState('')
-  const [contact,setContact] = useState('');
-  const [password,setPassword] = useState('');
-  const [spassword,setSpassword] = useState('');
-
+function Signup() {
+  const [userName, setUserName] = useState("");
+  const [contact, setContact] = useState("");
+  const [password, setPassword] = useState("");
+  const [spassword, setSpassword] = useState("");
+  const [passwordMatched, setPasswordMatched] = useState(true);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
   const handleSubmit = () => {
-    if(password !== spassword) {
-      
+    if (password !== spassword) {
+      setPasswordMatched(false);
+      return;
     }
     const user = {
-      name : userName,
-      mobile : contact,
-      password : password
-    }
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(user)
+      name: userName,
+      mobile: contact,
+      password: password,
     };
-    fetch('http://localhost:2000/auth/signup', requestOptions)
-      .then(response => response.json())
-      .then(data => console.log(data));
-  }
-
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(user),
+    };
+    fetch("http://localhost:2000/auth/signup", requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        if(data.success) {
+          navigate("/login")
+        } else {
+          setError(data.message);
+        }
+      })
+      .catch(err => {
+        setError(err);
+      });
+  };
   return (
     <MDBContainer
       fluid
@@ -77,7 +87,6 @@ function App() {
             placeholder="Enter Your Contact Number"
             required
             onChange={(e) => setContact(e.target.value)}
-
           />
           <MDBInput
             wrapperClass="mb-4"
@@ -88,7 +97,6 @@ function App() {
             size="lg"
             required
             onChange={(e) => setPassword(e.target.value)}
-
           />
           <MDBInput
             wrapperClass="mb-4"
@@ -99,7 +107,6 @@ function App() {
             size="lg"
             required
             onChange={(e) => setSpassword(e.target.value)}
-
           />
           {/* implement only if time permits */}
           {/* <div className="d-flex justify-content-between mb-4">
@@ -112,15 +119,24 @@ function App() {
             <a href="!#">Forgot password?</a>
           </div> */}
 
-          <div className="text-center text-md-start mt-4 pt-2">
-            <Link to="/">
-              <MDBBtn className="mb-0 px-5 btn-warning" size="lg" onClick={handleSubmit}>
-                Sign Up
-              </MDBBtn>
-            </Link>
-            <p className="small fw-bold mt-2 pt-1 mb-2">
+          {!passwordMatched && (
+            <p className="small fw-bold mt-2 pt-1 mb-2 text-danger">
               Password not matching
             </p>
+          )}
+          {error && (
+            <p className="small fw-bold mt-2 pt-1 mb-2 text-danger">
+              {error}
+            </p>
+          )}
+          <div className="text-center text-md-start mt-4 pt-2">
+            <MDBBtn
+              className="mb-0 px-5 btn-warning"
+              size="lg"
+              onClick={handleSubmit}
+            >
+              Sign Up
+            </MDBBtn>
             <p className="small fw-bold mt-2 pt-1 mb-2">
               Already have an Account?{" "}
               <Link to="/login" className="link-danger">
@@ -134,4 +150,4 @@ function App() {
   );
 }
 
-export default App;
+export default Signup;

@@ -17,6 +17,9 @@ const BusStopSchema = new Schema({
         required:true
      }
      ,
+     bus_list:{
+        type:Array
+     }
 });
 
 // creating Blog model with collection name blogs

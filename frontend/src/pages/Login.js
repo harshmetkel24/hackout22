@@ -1,5 +1,4 @@
-import React, {useState} from "react";
-import axios from 'axios'
+import React, { useState } from "react";
 import {
   MDBContainer,
   MDBCol,
@@ -8,23 +7,39 @@ import {
   MDBInput,
 } from "mdb-react-ui-kit";
 import Navbar from "../components/Navbar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-function App() {
-  
-  const [contact,setContact] = useState('');
-  const [password,setPassword] = useState('');
-
+function Login() {
+  const [contact, setContact] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
   const handleSubmit = () => {
     const user = {
-      mobile : contact,
-      password : password
-    }
-    axios.post('/auth/login',user)
-    .then(res => 
-      console.log(res)
-    )
-  }
+      mobile: contact,
+      password: password,
+    };
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(user),
+    };
+    fetch("http://localhost:2000/auth/login", requestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          document.cookie = `token=${data.token};`
+          if(data.success) {
+            navigate("/" )
+          } else {
+            setError(data.message);
+          }
+        })
+        .catch(err => {
+          setError(err);
+        });
+  };
+
+  
 
   return (
     <MDBContainer
@@ -78,16 +93,22 @@ function App() {
             />
             <a href="!#">Forgot password?</a>
           </div> */}
-
+          {error && (
+            <p className="small fw-bold mt-2 pt-1 mb-2 text-danger">
+              {error}
+            </p>
+          )}
           <div className="text-center text-md-start mt-4 pt-2">
-            <Link to="/">
-              <MDBBtn className="mb-0 px-5 btn-warning" size="lg" onClick={handleSubmit}>
+              <MDBBtn
+                className="mb-0 px-5 btn-warning"
+                size="lg"
+                onClick={handleSubmit}
+              >
                 Login
               </MDBBtn>
-            </Link>
             <p className="small fw-bold mt-2 pt-1 mb-2">
               Don't have an account?{" "}
-              <Link to="signup" className="link-danger">
+              <Link to="/signup" className="link-danger">
                 SignUp
               </Link>
             </p>
@@ -98,4 +119,4 @@ function App() {
   );
 }
 
-export default App;
+export default Login;

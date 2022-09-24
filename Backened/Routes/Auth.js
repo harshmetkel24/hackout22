@@ -1,8 +1,10 @@
 const express = require('express');
 const User = require('../Models/User');
-const brcypt = require('bcrypt') // for encryption
+const bcrypt = require('bcrypt') // for encryption
 const jwt = require('jsonwebtoken')
 const createError = require('../utils/error.js')
+const dotenv = require ('dotenv');
+dotenv.config();
 
 const secret = process.env.JWT_SECRET;
 
@@ -12,18 +14,16 @@ router.post('/login', async (req, res, next) => {
 
     const { mobile, password } = req.body;
 
-    // find user with entered email
-    let user = await User.findOne({ mobile:mobile});
-    if (!user) {
-        return next(createError(404, "User not found!"))
-    }
-    else {
-        // compare both the passwords
-        const passCompaare = await brcypt.compare(password, user.password);
-        if (!passCompaare) {
-            return next(createError(400, "Wrong password or username!"))
+    User.findOne({ mobile:mobile})
+    .then((user) => {
+        if(!user) {
+            return next(createError(404, "User not found!"))
         }
-        else {
+
+        bcrypt.compare(password, user.password, (err, right) => {
+            if(right === false) {
+                return next(createError(400, "Wrong password or username!"))
+            }
             const data = {
                 user: { 
                     id: user._id,
@@ -33,22 +33,25 @@ router.post('/login', async (req, res, next) => {
             const authtoken = jwt.sign(data, secret);
             res.cookie("accessToken",authtoken,{
                 httpOnly : true
-            }).status(200).json({ success: true });
-        }
-    }
+            }).status(200).json({ success: true, token : authtoken});
+        })
+
+    }).catch((err) => {
+        next(err);
+    })
 })
 
 
 router.post('/signup',  async (req, res, next) => {
     
     const { name, mobile, password } = req.body;
-    let user = await User.findOne({ mobile:mobile,name : name});
+    let user = await User.findOne({ mobile:mobile});
     if (user) {
         return next(createError(400, "User already exists"))
     } else {
 
         const salt = bcrypt.genSaltSync(10);
-        const hashedPassword = bcrypt.hashSync(req.body.password, salt);
+        const hashedPassword = bcrypt.hashSync(password, salt);
 
         const newUser = new User({
             name: req.body.name,
