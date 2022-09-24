@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
+import { LoginContext } from "../Contexts/LoginContext";
+
 import Navbar from "../components/Navbar";
 import Predictor from "../components/Predictor";
 import Tutorial from "../components/Tutorial";
 
 const Home = () => {
+
+  const { userName, setUserName, token, setToken } = useContext(LoginContext)
+
   function getCookie() {
     var allcookies = document.cookie;
     let arr = allcookies.split(";")
@@ -12,19 +17,21 @@ const Home = () => {
         arr[i] = arr[i].substring(1)
       }
     }
-    let token = ""
+    let _token = ""
     for (let i = 0; i < arr.length; ++i) {
       if (arr[i].slice(0, 6) === "token=") {
-        token = arr[i].substring(6)
+        _token = arr[i].substring(6)
         break
       }
     }
-    return token
+    return { _token }
   }
-  const token = getCookie();
+  let { _token } = getCookie()
+  setToken(_token)
+  // token = getCookie();
   return (
     <div>
-      <Navbar token={token} />
+      <Navbar />
       <div className="mt-5 pt-3">
         {token && <Predictor />}
         <Tutorial />
