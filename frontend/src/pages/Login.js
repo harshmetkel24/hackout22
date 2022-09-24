@@ -25,21 +25,19 @@ function Login() {
       body: JSON.stringify(user),
     };
     fetch("http://localhost:2000/auth/login", requestOptions)
-        .then((response) => response.json())
-        .then((data) => {
-          document.cookie = `token=${data.token};max-age=86400`
-          if(data.success) {
-            navigate("/" )
-          } else {
-            setError(data.message);
-          }
-        })
-        .catch(err => {
-          setError(err);
-        });
+      .then((response) => response.json())
+      .then((data) => {
+        document.cookie = `token=${data.token};max-age=86400;SameSite=None;secure;`
+        if (data.success) {
+          navigate("/")
+        } else {
+          setError(data.message);
+        }
+      })
+      .catch(err => {
+        setError(err);
+      });
   };
-
-  
 
   return (
     <MDBContainer
@@ -99,13 +97,13 @@ function Login() {
             </p>
           )}
           <div className="text-center text-md-start mt-4 pt-2">
-              <MDBBtn
-                className="mb-0 px-5 btn-warning"
-                size="lg"
-                onClick={handleSubmit}
-              >
-                Login
-              </MDBBtn>
+            <MDBBtn
+              className="mb-0 px-5 btn-warning"
+              size="lg"
+              onClick={handleSubmit}
+            >
+              Login
+            </MDBBtn>
             <p className="small fw-bold mt-2 pt-1 mb-2">
               Don't have an account?{" "}
               <Link to="/signup" className="link-danger">
