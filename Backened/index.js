@@ -1,13 +1,11 @@
-// Import modules
-const express = require('express')
-const mongoose = require('mongoose')
-const dotenv = require('dotenv');
-const cors = require('cors')
+// const modules
+const express = require ('express')
+const mongoose = require ('mongoose')
+const dotenv = require ('dotenv');
+const cors = require ('cors');
 
-// Import routes
+// const routes
 const authRoute = require('./Routes/Auth.js')
-const checkAuth = require('./middlewares/authMiddleware.js');
-const find_buses = require('./utils/findBuses.js')
 
 const app = express();
 dotenv.config();
@@ -21,22 +19,13 @@ mongoose.connection.on("connected", () => {
 })
 
 // middlewares
-app.use(cors())
+// app.use(cors())
 app.use(express.json())
 
 // Use routes
 app.use("/auth",authRoute);
 
-// Searching route
-app.post('/find',checkAuth,(req,res) =>  {
-
-    const source = req.query.source;
-    const destination = req.query.destination;
-    const waiting_time = req.query.waiting_time;
-    const buses = find_buses(source,destination,waiting_time);
-
-    res.status(200).json(buses);
-})
+// Add find functionality
 
 // Error handling middleware
 app.use((err,req,res,next) => {

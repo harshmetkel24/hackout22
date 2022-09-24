@@ -1,4 +1,5 @@
-import React from "react";
+import React, {useState} from "react";
+import axios from 'axios'
 import {
   MDBContainer,
   MDBCol,
@@ -10,6 +11,21 @@ import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 
 function App() {
+  
+  const [contact,setContact] = useState('');
+  const [password,setPassword] = useState('');
+
+  const handleSubmit = () => {
+    const user = {
+      mobile : contact,
+      password : password
+    }
+    axios.post('/auth/login',user)
+    .then(res => 
+      console.log(res)
+    )
+  }
+
   return (
     <MDBContainer
       fluid
@@ -40,6 +56,7 @@ function App() {
             placeholder="Enter Your Contact Number"
             size="lg"
             required
+            onChange={(e) => setContact(e.target.value)}
           />
           <MDBInput
             wrapperClass="mb-4"
@@ -49,6 +66,7 @@ function App() {
             placeholder="Enter Your Password"
             size="lg"
             required
+            onChange={(e) => setPassword(e.target.value)}
           />
           {/* implement only if time permits */}
           {/* <div className="d-flex justify-content-between mb-4">
@@ -63,7 +81,7 @@ function App() {
 
           <div className="text-center text-md-start mt-4 pt-2">
             <Link to="/">
-              <MDBBtn className="mb-0 px-5 btn-warning" size="lg">
+              <MDBBtn className="mb-0 px-5 btn-warning" size="lg" onClick={handleSubmit}>
                 Login
               </MDBBtn>
             </Link>

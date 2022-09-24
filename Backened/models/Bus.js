@@ -2,23 +2,21 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 //Schema for user
-const UserSchema = new Schema({
-    number_plate:
+const BusSchema = new Schema({
+    bus_no:
     {
-        type:String,
+        type:Number,
         required:true
     },
-    source:{
-        type:String,
+    path:
+    {
+        type:Array,
         require:true
-    },
-    destination:{
-        type:String,
-        required:true
-    },
-    current_location:{
-        type:String
-    },
+    }
+    ,start_time:{
+        type:Date
+    }
+    ,
     available_seats:{
         type:Number,
         min:0
@@ -26,6 +24,6 @@ const UserSchema = new Schema({
 });
 
 // creating Blog model with collection name blogs
-const Bus = mongoose.model('bus', UserSchema);
+const Bus = mongoose.model('bus', BusSchema);
 
 module.exports = Bus;
