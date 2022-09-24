@@ -30,11 +30,14 @@ export default function SelectLabels({ label, helperText }) {
           id="demo-simple-select-helper"
           value={age}
           label="Age"
+          variant="filled"
+          color="warning"
           onChange={handleChange}
         >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          <MenuItem value={15}>15</MenuItem>
+          <MenuItem value={30}>30</MenuItem>
+          <MenuItem value={45}>45</MenuItem>
+          <MenuItem value={60}>60</MenuItem>
         </Select>
         <FormHelperText>{helperText}</FormHelperText>
       </FormControl>

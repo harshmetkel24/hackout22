@@ -4,12 +4,25 @@ import Predictor from "../components/Predictor";
 import Tutorial from "../components/Tutorial";
 
 const Home = () => {
-  function getCookie() {
+  const getCookie = () => {
     var allcookies = document.cookie;
-    let tokenCookie = allcookies.split(";")[0];
-    return tokenCookie.substring(6);
-  }
-  const token = getCookie();
+    let arr = allcookies.split(";");
+    for (let i = 0; i < arr.length; ++i) {
+      if (arr[i][0] === " ") {
+        arr[i] = arr[i].substring(1);
+      }
+    }
+    // console.log(arr);
+    let token = "";
+    for (let i = 0; i < arr.length; ++i) {
+      if (arr[i].slice(0, 6) === "token=") {
+        token = arr[i].substring(6);
+        break;
+      }
+    }
+    return token;
+  };
+  let token = getCookie();
   useEffect(() => {
     document.title = "Home | Predict Bus";
   }, []);

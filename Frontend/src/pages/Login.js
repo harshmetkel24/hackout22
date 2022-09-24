@@ -7,35 +7,40 @@ import {
   MDBInput,
 } from "mdb-react-ui-kit";
 import Navbar from "../components/Navbar";
-import { Link, redirect } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-function Signup() {
-  const [userName, setUserName] = useState("");
+function Login() {
   const [contact, setContact] = useState("");
   const [password, setPassword] = useState("");
-  const [spassword, setSpassword] = useState("");
-  const [passwordMatched, setPasswordMatched] = useState(true);
-
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
   const handleSubmit = () => {
-    if (password !== spassword) {
-      setPasswordMatched(false);
-      return;
-    }
     const user = {
-      name: userName,
       mobile: contact,
       password: password,
     };
+
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
     };
-    fetch("http://localhost:2000/auth/signup", requestOptions)
+
+    fetch("http://localhost:2000/auth/login", requestOptions)
       .then((response) => response.json())
-      .then((data) => console.log(data));
-    redirect("/login");
+      .then((data) => {
+        document.cookie = `token=${data.token};max-age=86400;SameSite=None;secure;`;
+        if (data.success) {
+          navigate("/", { state: { name: data.user.name } });
+        } else {
+          setError(data.message);
+        }
+      })
+      .catch((err) => {
+        setError(err);
+      });
   };
+
   return (
     <MDBContainer
       fluid
@@ -60,22 +65,11 @@ function Signup() {
         >
           <MDBInput
             wrapperClass="mb-4"
-            label="Username"
-            id="formControlLg"
-            type="text"
-            size="lg"
-            placeholder="Enter Your Username"
-            required
-            onChange={(e) => setUserName(e.target.value)}
-            className="rounded-5"
-          />
-          <MDBInput
-            wrapperClass="mb-4"
             label="Contant No"
             id="formControlLg"
             type="tel"
-            size="lg"
             placeholder="Enter Your Contact Number"
+            size="lg"
             required
             onChange={(e) => setContact(e.target.value)}
             className="rounded-5"
@@ -91,17 +85,6 @@ function Signup() {
             onChange={(e) => setPassword(e.target.value)}
             className="rounded-5"
           />
-          <MDBInput
-            wrapperClass="mb-4"
-            label="Confirm Password"
-            id="formControlLg"
-            type="password"
-            placeholder="Confirm Your Password"
-            size="lg"
-            required
-            onChange={(e) => setSpassword(e.target.value)}
-            className="rounded-5"
-          />
           {/* implement only if time permits */}
           {/* <div className="d-flex justify-content-between mb-4">
             <MDBCheckbox
@@ -112,24 +95,24 @@ function Signup() {
             />
             <a href="!#">Forgot password?</a>
           </div> */}
-
-          {!passwordMatched && (
-            <p className="small fw-bold mt-2 pt-1 mb-2 text-danger">
-              Password not matching
-            </p>
+          {error && (
+            <p className="small fw-bold mt-2 pt-1 mb-2 text-danger">{error}</p>
           )}
+
           <div className="text-center text-md-start mt-4 pt-2">
-            <button
-              className="mb-0 px-5 btn-warning btn btn-warning btn-lg"
-              size="lg"
-              onClick={handleSubmit}
-            >
-              Sign Up
-            </button>
-            <p className="small fw-bold mt-2 pt-1 mb-2">
-              Already have an Account?{" "}
-              <Link to="/login" className="link-danger">
+            <Link to="/">
+              <MDBBtn
+                className="mb-0 px-5 btn-warning"
+                size="lg"
+                onClick={handleSubmit}
+              >
                 Login
+              </MDBBtn>
+            </Link>
+            <p className="small fw-bold mt-2 pt-1 mb-2">
+              Don't have an account?{" "}
+              <Link to="/signup" className="link-danger">
+                SignUp
               </Link>
             </p>
           </div>
@@ -139,4 +122,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default Login;
