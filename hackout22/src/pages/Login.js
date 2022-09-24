@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   MDBContainer,
   MDBCol,
@@ -9,7 +9,17 @@ import {
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 
-function App() {
+function Login() {
+  const [contact, setContact] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = () => {
+    const user = {
+      mobile: contact,
+      password: password,
+    };
+  };
+
   return (
     <MDBContainer
       fluid
@@ -29,7 +39,7 @@ function App() {
         <MDBCol
           col="4"
           md="6"
-          className="border border-warning p-5 border-3 rounded-3 shadow-lg"
+          className="border border-warning p-5 border-3 rounded-5 shadow-lg"
           style={{ backgroundColor: "white" }}
         >
           <MDBInput
@@ -40,6 +50,8 @@ function App() {
             placeholder="Enter Your Contact Number"
             size="lg"
             required
+            onChange={(e) => setContact(e.target.value)}
+            className="rounded-5"
           />
           <MDBInput
             wrapperClass="mb-4"
@@ -49,6 +61,8 @@ function App() {
             placeholder="Enter Your Password"
             size="lg"
             required
+            onChange={(e) => setPassword(e.target.value)}
+            className="rounded-5"
           />
           {/* implement only if time permits */}
           {/* <div className="d-flex justify-content-between mb-4">
@@ -63,13 +77,17 @@ function App() {
 
           <div className="text-center text-md-start mt-4 pt-2">
             <Link to="/">
-              <MDBBtn className="mb-0 px-5 btn-warning" size="lg">
+              <MDBBtn
+                className="mb-0 px-5 btn-warning"
+                size="lg"
+                onClick={handleSubmit}
+              >
                 Login
               </MDBBtn>
             </Link>
             <p className="small fw-bold mt-2 pt-1 mb-2">
               Don't have an account?{" "}
-              <Link to="signup" className="link-danger">
+              <Link to="/signup" className="link-danger">
                 SignUp
               </Link>
             </p>
@@ -80,4 +98,4 @@ function App() {
   );
 }
 
-export default App;
+export default Login;

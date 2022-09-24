@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   MDBContainer,
   MDBCol,
@@ -7,9 +7,35 @@ import {
   MDBInput,
 } from "mdb-react-ui-kit";
 import Navbar from "../components/Navbar";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 
-function App() {
+function Signup() {
+  const [userName, setUserName] = useState("");
+  const [contact, setContact] = useState("");
+  const [password, setPassword] = useState("");
+  const [spassword, setSpassword] = useState("");
+  const [passwordMatched, setPasswordMatched] = useState(true);
+
+  const handleSubmit = () => {
+    if (password !== spassword) {
+      setPasswordMatched(false);
+      return;
+    }
+    const user = {
+      name: userName,
+      mobile: contact,
+      password: password,
+    };
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(user),
+    };
+    fetch("http://localhost:2000/auth/signup", requestOptions)
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+    redirect("/login");
+  };
   return (
     <MDBContainer
       fluid
@@ -29,7 +55,7 @@ function App() {
         <MDBCol
           col="4"
           md="6"
-          className="border border-warning p-5 border-3 rounded-3 shadow-lg"
+          className="border border-warning p-5 border-3 rounded-5 shadow-lg"
           style={{ backgroundColor: "white" }}
         >
           <MDBInput
@@ -40,6 +66,8 @@ function App() {
             size="lg"
             placeholder="Enter Your Username"
             required
+            onChange={(e) => setUserName(e.target.value)}
+            className="rounded-5"
           />
           <MDBInput
             wrapperClass="mb-4"
@@ -49,6 +77,8 @@ function App() {
             size="lg"
             placeholder="Enter Your Contact Number"
             required
+            onChange={(e) => setContact(e.target.value)}
+            className="rounded-5"
           />
           <MDBInput
             wrapperClass="mb-4"
@@ -58,6 +88,8 @@ function App() {
             placeholder="Enter Your Password"
             size="lg"
             required
+            onChange={(e) => setPassword(e.target.value)}
+            className="rounded-5"
           />
           <MDBInput
             wrapperClass="mb-4"
@@ -67,6 +99,8 @@ function App() {
             placeholder="Confirm Your Password"
             size="lg"
             required
+            onChange={(e) => setSpassword(e.target.value)}
+            className="rounded-5"
           />
           {/* implement only if time permits */}
           {/* <div className="d-flex justify-content-between mb-4">
@@ -79,12 +113,19 @@ function App() {
             <a href="!#">Forgot password?</a>
           </div> */}
 
+          {!passwordMatched && (
+            <p className="small fw-bold mt-2 pt-1 mb-2 text-danger">
+              Password not matching
+            </p>
+          )}
           <div className="text-center text-md-start mt-4 pt-2">
-            <Link to="/">
-              <MDBBtn className="mb-0 px-5 btn-warning" size="lg">
-                Sign Up
-              </MDBBtn>
-            </Link>
+            <button
+              className="mb-0 px-5 btn-warning btn btn-warning btn-lg"
+              size="lg"
+              onClick={handleSubmit}
+            >
+              Sign Up
+            </button>
             <p className="small fw-bold mt-2 pt-1 mb-2">
               Already have an Account?{" "}
               <Link to="/login" className="link-danger">
@@ -98,4 +139,4 @@ function App() {
   );
 }
 
-export default App;
+export default Signup;
