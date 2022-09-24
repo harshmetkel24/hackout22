@@ -18,20 +18,22 @@ function App() {
   const [spassword,setSpassword] = useState('');
 
   const handleSubmit = () => {
-    if(password === spassword) {
-      // Do something
+    if(password !== spassword) {
+      
     }
     const user = {
       name : userName,
       mobile : contact,
       password : password
     }
-    axios.post('http://localhost:2000/auth/signup',user)
-    .then(res => 
-      console.log(res)
-    ).catch(err => 
-      console.log(err)
-    )
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user)
+    };
+    fetch('http://localhost:2000/auth/signup', requestOptions)
+      .then(response => response.json())
+      .then(data => console.log(data));
   }
 
   return (
@@ -116,6 +118,9 @@ function App() {
                 Sign Up
               </MDBBtn>
             </Link>
+            <p className="small fw-bold mt-2 pt-1 mb-2">
+              Password not matching
+            </p>
             <p className="small fw-bold mt-2 pt-1 mb-2">
               Already have an Account?{" "}
               <Link to="/login" className="link-danger">

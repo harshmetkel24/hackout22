@@ -25,7 +25,7 @@ router.post('/login', async (req, res, next) => {
         }
         else {
             const data = {
-                user: {
+                user: { 
                     id: user._id,
                  }
             }
@@ -39,23 +39,30 @@ router.post('/login', async (req, res, next) => {
 })
 
 
-router.post('/signup',  (req, res, next) => {
+router.post('/signup',  async (req, res, next) => {
     
-    const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(req.body.password, salt);
+    const { name, mobile, password } = req.body;
+    let user = await User.findOne({ mobile:mobile,name : name});
+    if (user) {
+        return next(createError(400, "User already exists"))
+    } else {
 
-    const newUser = new User({
-        name: req.body.name,
-        password: hashedPassword,
-        mobile: req.body.mobile
-    })
+        const salt = bcrypt.genSaltSync(10);
+        const hashedPassword = bcrypt.hashSync(req.body.password, salt);
 
-    newUser.save()
-    .then((createdUser) => {
-        res.status(201).json({success : true})
-    }) .catch((err) => {
-        next(err)
-    })
+        const newUser = new User({
+            name: req.body.name,
+            password: hashedPassword,
+            mobile: req.body.mobile
+        })
+
+        newUser.save()
+        .then((createdUser) => {
+            res.status(201).json({success : true})
+        }) .catch((err) => {
+            next(err)
+        })
+    }
 })
 
 module.exports = router;
