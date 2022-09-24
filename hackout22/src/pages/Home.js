@@ -15,15 +15,24 @@ const Home = () => {
         </div>
         <div className="tutorial-container container-fluid d-flex justify-content-around flex-wrap">
           <Card
-            icon={<i class="fa-solid fa-route"></i>}
-            step={"Select Route"}
+            icon={
+              <i class="fa-solid fa-route" style={{ fontSize: "70px" }}></i>
+            }
+            step={"Select Source and Destination"}
           />
           <Card
-            icon={<i class="fa-solid fa-clock"></i>}
+            icon={
+              <i class="fa-solid fa-clock" style={{ fontSize: "70px" }}></i>
+            }
             step={"Select Waiting Time"}
           />
           <Card
-            icon={<i class="fa-solid fa-square-poll-vertical"></i>}
+            icon={
+              <i
+                class="fa-solid fa-square-poll-vertical"
+                style={{ fontSize: "70px" }}
+              ></i>
+            }
             step={"Our Prediction"}
           />
         </div>
