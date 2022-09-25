@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-
 import { Container, TextField, Button, FormControl } from "@mui/material";
 import { Box } from "@mui/system";
 
@@ -20,28 +19,9 @@ const list = [
 ];
 
 const ContactMe = () => {
-  const getCookie = () => {
-    var allcookies = document.cookie;
-    let arr = allcookies.split(";");
-    for (let i = 0; i < arr.length; ++i) {
-      if (arr[i][0] === " ") {
-        arr[i] = arr[i].substring(1);
-      }
-    }
-    let token = "";
-    for (let i = 0; i < arr.length; ++i) {
-      if (arr[i].slice(0, 6) === "token=") {
-        token = arr[i].substring(6);
-        break;
-      }
-    }
-    return token;
-  };
-  let token = getCookie();
-
+  const [error, setError] = useState(null);
   const [mailerState, setMailerState] = useState({
-    name: "",
-    email: "",
+    mobile: "",
     message: "",
   });
 
@@ -56,42 +36,44 @@ const ContactMe = () => {
     }));
   };
 
-  const sendEmail = async (e) => {
+  const sendEmail = (e) => {
+    console.log(mailerState);
     e.preventDefault();
+
+    const feedback = {
+      mobile: mailerState.mobile,
+      message: mailerState.message,
+    };
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(feedback),
+    };
     const url =
       process.env.NODE_ENV === "production"
-        ? "/send/"
-        : "http://localhost:3001/send/";
-    const res = await fetch(url, {
-      method: "post",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({ mailerState }),
-    })
-      .then((res) => res.json())
-      .then(async (res) => {
-        // get the response from transporter.sendEmail to see if success or not
-        const resData = await res;
-        if (resData.status === "success") {
+        ? "/feedback"
+        : "http://localhost:2000/feedback";
+    fetch(url, requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+
+        if (data.success) {
           alert("Your message is sent Successfully🤝🏽.");
         } else {
+          setError(data.message);
           alert(
             "some error occured while sending your message. Please try again after a while. Inconvineince caused is regretted🙇🏽‍♂️."
           );
         }
       })
-      .then(() => {
-        setMailerState({
-          email: "",
-          name: "",
-          message: "",
-        });
+      .catch((err) => {
+        setError(err);
       });
   };
   return (
     <>
-      <Navbar token={token} />
+      <Navbar />
       <Container
         maxWidth={"lg"}
         sx={{
@@ -190,6 +172,7 @@ const ContactMe = () => {
             >
               Send
             </Button>
+            {error && <p style={{ color: "red" }}>{error}</p>}
           </FormControl>
         </Box>
       </Container>

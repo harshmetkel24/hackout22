@@ -27,7 +27,11 @@ function Login() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
     };
-    fetch("http://localhost:2000/auth/login", requestOptions)
+    const url =
+      process.env.NODE_ENV === "production"
+        ? "/auth/login"
+        : "http://localhost:2000/auth/login";
+    fetch(url, requestOptions)
       .then((response) => response.json())
       .then((data) => {
         document.cookie = `token=${data.token};max-age=3600;SameSite=None;secure;`;

@@ -14,7 +14,7 @@ const BusSchema = new Schema({
         require:true
     }
     ,start_time:{
-        type:Date
+        type:Number
     }
     ,
     available_seats:{

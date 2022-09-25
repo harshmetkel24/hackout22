@@ -4,7 +4,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-
+import React from "react";
 import { LoginContext } from "./Contexts/LoginContext";
 import { useState } from "react";
 

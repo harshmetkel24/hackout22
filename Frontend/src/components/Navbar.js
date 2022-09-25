@@ -16,7 +16,7 @@ const Navbar = () => {
     >
       <div className="container-fluid">
         <Link
-          className="navbar-brand"
+          className="navbar-brand px-5"
           style={{ fontWeight: "bold", fontSize: "1.5em" }}
           to="/"
         >
@@ -63,7 +63,7 @@ const Navbar = () => {
                   className="navbar-nav me-auto mb-2 mb-lg-0"
                   style={{ paddingRight: "8px", marginTop: "5px" }}
                 >
-                  <li className="nav-item">Welcome {userName}</li>
+                  <li className="nav-item mx-5">Welcome {userName}</li>
                 </ul>
                 <Link to="/login">
                   <button

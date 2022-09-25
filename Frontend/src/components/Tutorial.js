@@ -3,7 +3,7 @@ import Card from "./Card";
 
 const Tutorial = () => {
   return (
-    <div className="container">
+    <div className="container" style={{ minHeight: "90vh" }}>
       <div
         className="text-center display-5 font-weight-bold mt-4 heading"
         style={{ fontWeight: 500, color: "  #f37335" }}

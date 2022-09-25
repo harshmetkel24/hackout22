@@ -12,14 +12,6 @@ const Card = ({ step, icon }) => {
           <div className="mb-2 text-center mt-5">{step}</div>
         </div>
       </div>
-      {/* <div className="card-body">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur
-        sint adipisci saepe odit perspiciatis quas ut temporibus eligendi
-        mollitia assumenda voluptates, incidunt explicabo? Pariatur unde
-        consequuntur eveniet optio. Veritatis, velit animi, cum saepe iure ab
-        omnis dolor nihil obcaecati nisi quidem earum porro quis labore
-        aspernatur officia soluta quas minus!
-      </div> */}
     </div>
   );
 };

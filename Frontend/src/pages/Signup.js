@@ -26,7 +26,11 @@ function Signup() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
     };
-    fetch("http://localhost:2000/auth/signup", requestOptions)
+    const url =
+      process.env.NODE_ENV === "production"
+        ? "/auth/signup"
+        : "http://localhost:2000/auth/signup";
+    fetch(url, requestOptions)
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {

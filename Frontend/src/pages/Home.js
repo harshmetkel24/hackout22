@@ -36,7 +36,6 @@ const Home = () => {
       <Navbar />
       <div className="mt-5 pt-3">
         {token && <Predictor />}
-        {/* <Predictor/> */}
         <Tutorial />
       </div>
     </>
